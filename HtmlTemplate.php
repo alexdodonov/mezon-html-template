@@ -87,6 +87,18 @@ class HtmlTemplate
     }
 
     /**
+     * Method sets multiple variables
+     *
+     * @param array $vars
+     */
+    public function setPageVars(array $vars): void
+    {
+        foreach ($vars as $var => $value) {
+            $this->setPageVar($var, $value);
+        }
+    }
+
+    /**
      * Getting page var
      *
      * @param string $var

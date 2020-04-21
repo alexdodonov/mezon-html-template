@@ -114,4 +114,40 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
         // test body
         $template->getPageVar('unexisting-var');
     }
+
+    /**
+     * Testing setPageVars method
+     */
+    public function testSetPageVars(): void
+    {
+        // setup
+        $template = new \Mezon\HtmlTemplate\HtmlTemplate(__DIR__);
+
+        // test body
+        $template->setPageVars([
+            'title' => 'stitle',
+            'resources' => 'sresources',
+            'main' => 'smain'
+        ]);
+
+        // assertions
+        $this->assertEquals('stitle', $template->getPageVar('title'));
+        $this->assertEquals('sresources', $template->getPageVar('resources'));
+        $this->assertEquals('smain', $template->getPageVar('main'));
+    }
+
+    /**
+     * Testing method setPageVarFromFile
+     */
+    public function testSetPageVarFromFile(): void
+    {
+        // setup
+        $template = new \Mezon\HtmlTemplate\HtmlTemplate(__DIR__);
+
+        // test body
+        $template->setPageVarFromFile('title', __DIR__.'/res/var.txt');
+
+        // assertions
+        $this->assertEquals('some var from file', $template->getPageVar('title'));
+    }
 }

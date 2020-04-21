@@ -7,3 +7,13 @@ Just type
 ```
 composer require mezon/html-template
 ```
+
+## Usage
+
+First of all you need to create object
+
+```PHP
+$template = new \Mezon\HtmlTemplate\HtmlTemplate('./main-template/');
+```
+
+This code assumes that you have all template resources in the directory './main-template/'
