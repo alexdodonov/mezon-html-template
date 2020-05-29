@@ -56,6 +56,9 @@ class HtmlTemplate
      */
     public function __construct(string $path, string $template = 'index', array $blocks = [])
     {
+        // TODO make multyple paths
+        // TODO add method addPaths
+        // TODO add method getPaths
         $this->path = $path;
 
         $this->resetLayout($template);
