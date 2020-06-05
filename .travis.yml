@@ -6,8 +6,7 @@ php:
   - '7.4'
 
 before_script:
-  - composer require "mezon/conf"
-  - composer require "mezon/template-engine"
+  - composer install -n
 
 script:
   - phpunit --coverage-clover=coverage.xml --configuration=phpunit.xml
