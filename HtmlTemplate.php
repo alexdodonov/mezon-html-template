@@ -31,35 +31,46 @@ class HtmlTemplate
 
     /**
      * Path to the template folder
+     *
+     * @var array
      */
-    private $path = false;
+    private $paths = false;
 
     /**
      * Page blocks
+     *
+     * @var array
      */
     private $blocks = [];
 
     /**
      * Page variables
+     *
+     * @var array
      */
-    private $pageVars = array();
+    private $pageVars = [];
 
     /**
      * Template сonstructor
      *
-     * @param string $path
+     * @param string|array $path
      *            Path to template
      * @param string $template
      *            Page layout
      * @param array $blocks
      *            Page blocks
      */
-    public function __construct(string $path, string $template = 'index', array $blocks = [])
+    public function __construct($path, string $template = 'index', array $blocks = [])
     {
-        // TODO make multyple paths
-        // TODO add method addPaths
-        // TODO add method getPaths
-        $this->path = $path;
+        if (is_string($path)) {
+            $this->paths = [
+                $path
+            ];
+        } elseif (is_array($path)) {
+            $this->paths = $path;
+        } else {
+            throw (new \Exception('Invalid type for $path parameter'));
+        }
 
         $this->resetLayout($template);
 
@@ -74,6 +85,37 @@ class HtmlTemplate
         // output all blocks in one place
         // but each block can be inserted in {$blockName} places
         $this->setPageVar('content-blocks', implode('', $this->blocks));
+    }
+
+    /**
+     * Method adds paths to the setup ones
+     *
+     * @param array $paths
+     *            paths to directories with the template's static content
+     */
+    public function addPaths(array $paths): void
+    {
+        $this->paths = array_merge($paths, $this->paths);
+    }
+
+    /**
+     * Resetting paths
+     *
+     * @param array $paths
+     */
+    public function setPaths(array $paths): void
+    {
+        $this->paths = $paths;
+    }
+
+    /**
+     * Method returns all setup puths of the template
+     *
+     * @return array
+     */
+    public function getPaths(): array
+    {
+        return $this->paths;
     }
 
     /**
@@ -151,6 +193,43 @@ class HtmlTemplate
     }
 
     /**
+     * Checking if the file exists
+     *
+     * @param string $fileSubPath
+     *            file sub path
+     * @return bool true if the file exists, false otherwise
+     */
+    protected function fileExists(string $fileSubPath): bool
+    {
+        foreach ($this->paths as $path) {
+            if (file_exists(trim($path, '/') . '/' . trim($fileSubPath, '/'))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Getting content of the file
+     *
+     * @param string $fileSubPath
+     *            file sub path
+     * @return string file content
+     */
+    protected function fileGetContents(string $fileSubPath): string
+    {
+        foreach ($this->paths as $path) {
+            $finalPath = trim($path, '/') . '/' . trim($fileSubPath, '/');
+            if (file_exists($finalPath)) {
+                return file_get_contents($finalPath);
+            }
+        }
+// @codeCoverageIgnoreStart
+        return '';
+    }// @codeCoverageIgnoreEnd
+
+    /**
      * Method resets layout
      *
      * @param string $template
@@ -160,12 +239,14 @@ class HtmlTemplate
     {
         $template .= '.html';
 
-        if (file_exists($this->path . '/' . $template)) {
-            $this->template = file_get_contents($this->path . '/' . $template);
-        } elseif (file_exists($this->path . '/res/templates/' . $template)) {
-            $this->template = file_get_contents($this->path . '/res/templates/' . $template);
+        if ($this->fileExists($template)) {
+            $this->template = $this->fileGetContents($template);
+        } elseif ($this->fileExists('res/templates/' . $template)) {
+            $this->template = $this->fileGetContents('res/templates/' . $template);
         } else {
-            throw (new \Exception('Template file on the path ' . $this->path . ' was not found', - 1));
+            throw (new \Exception(
+                'Template file ' . $template . ' on the paths ' . implode(', ', $this->paths) . ' was not found',
+                - 1));
         }
     }
 
@@ -226,10 +307,10 @@ class HtmlTemplate
      */
     protected function readBlock(string $blockName): string
     {
-        if (file_exists($this->path . '/res/blocks/' . $blockName . '.tpl')) {
-            $blockContent = file_get_contents($this->path . '/res/blocks/' . $blockName . '.tpl');
-        } elseif (file_exists($this->path . '/blocks/' . $blockName . '.tpl')) {
-            $blockContent = file_get_contents($this->path . '/blocks/' . $blockName . '.tpl');
+        if ($this->fileExists('res/blocks/' . $blockName . '.tpl')) {
+            $blockContent = $this->fileGetContents('res/blocks/' . $blockName . '.tpl');
+        } elseif ($this->fileExists('blocks/' . $blockName . '.tpl')) {
+            $blockContent = $this->fileGetContents('blocks/' . $blockName . '.tpl');
         } else {
             throw (new \Exception('Block ' . $blockName . ' was not found', - 1));
         }

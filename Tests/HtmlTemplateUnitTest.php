@@ -1,15 +1,50 @@
 <?php
+namespace Mezon\HtmlTemplate\Tests;
 
 class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
 {
 
+    const PATH_TO_TEST_DATA = __DIR__ . '/test-data/';
+
+    /**
+     * Data provider for constructor tests
+     *
+     * @return array
+     */
+    public function constructorDataProvider(): array
+    {
+        return [
+            [
+                HtmlTemplateUnitTest::PATH_TO_TEST_DATA,
+                'index'
+            ],
+            [
+                HtmlTemplateUnitTest::PATH_TO_TEST_DATA . 'res/',
+                'index2'
+            ],
+            [
+                [
+                    HtmlTemplateUnitTest::PATH_TO_TEST_DATA,
+                    HtmlTemplateUnitTest::PATH_TO_TEST_DATA . 'res/'
+                ],
+                'index2'
+            ]
+        ];
+    }
+
     /**
      * Testing construction with default path
+     *
+     * @param string|array $path
+     *            paths to content
+     * @param string $template
+     *            template's name
+     * @dataProvider constructorDataProvider
      */
-    public function testConstructor1()
+    public function testConstructor($path, string $template)
     {
         // setup and test body
-        $template = new \Mezon\HtmlTemplate\HtmlTemplate(__DIR__ . '/test-data/', 'index', [
+        $template = new \Mezon\HtmlTemplate\HtmlTemplate($path, $template, [
             'main'
         ]);
 
@@ -21,31 +56,39 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Testing construction with flexible path
+     * Data provider for constructor tests
+     *
+     * @return array
      */
-    public function testConstructor2()
+    public function invalidConstructorDataProvider(): array
     {
-        // setup and test body
-        $template = new \Mezon\HtmlTemplate\HtmlTemplate(__DIR__ . '/test-data/res/', 'index2', [
-            'main'
-        ]);
-
-        $content = $template->compile();
-
-        // assertions
-        $this->assertStringContainsString('<body>', $content, 'Layout was not setup');
-        $this->assertStringContainsString('<section>', $content, 'Block was not setup');
+        return [
+            [
+                __DIR__,
+                'index3'
+            ],
+            [
+                false,
+                'index4'
+            ]
+        ];
     }
 
     /**
      * Testing invalid construction
+     *
+     * @param string|array $path
+     *            paths to content
+     * @param string $template
+     *            template's name
+     * @dataProvider invalidConstructorDataProvider
      */
-    public function testInvalidConstructor()
+    public function testInvalidConstructor($path, string $template)
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         // setup and test body
-        $template = new \Mezon\HtmlTemplate\HtmlTemplate(__DIR__, 'index3', [
+        $template = new \Mezon\HtmlTemplate\HtmlTemplate($path, $template, [
             'main'
         ]);
 
@@ -59,7 +102,7 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testCompile()
     {
         // setup
-        $template = new \Mezon\HtmlTemplate\HtmlTemplate(__DIR__ . '/test-data/res/', 'index2', [
+        $template = new \Mezon\HtmlTemplate\HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, 'index', [
             'main'
         ]);
         $_SERVER['HTTP_HOST'] = 'host';
@@ -77,11 +120,11 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testGetUnexistingBlock()
     {
         // setup and test body
-        $template = new \Mezon\HtmlTemplate\HtmlTemplate(__DIR__ . '/test-data/', 'index', [
+        $template = new \Mezon\HtmlTemplate\HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, 'index', [
             'main'
         ]);
 
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         // test body
         $template->getBlock('unexisting');
@@ -145,9 +188,39 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
         $template = new \Mezon\HtmlTemplate\HtmlTemplate(__DIR__);
 
         // test body
-        $template->setPageVarFromFile('title', __DIR__.'/res/var.txt');
+        $template->setPageVarFromFile('title', __DIR__ . '/res/var.txt');
 
         // assertions
         $this->assertEquals('some var from file', $template->getPageVar('title'));
+    }
+
+    /**
+     * Testing methods addPaths, setPaths, getPaths
+     */
+    public function testPathsManipulations(): void
+    {
+        // setup
+        $template = new \Mezon\HtmlTemplate\HtmlTemplate(__DIR__);
+
+        // assertions
+        $this->assertContains(__DIR__, $template->getPaths());
+
+        // test body
+        $template->addPaths([
+            'some-path'
+        ]);
+
+        // assertions
+        $this->assertContains(__DIR__, $template->getPaths());
+        $this->assertContains('some-path', $template->getPaths());
+
+        // test body
+        $template->setPaths([
+            'some-path'
+        ]);
+
+        // asssertions
+        $this->assertNotContains(__DIR__, $template->getPaths());
+        $this->assertContains('some-path', $template->getPaths());
     }
 }
