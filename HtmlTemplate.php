@@ -202,7 +202,7 @@ class HtmlTemplate
     protected function fileExists(string $fileSubPath): bool
     {
         foreach ($this->paths as $path) {
-            if (file_exists(trim($path, '/\\') . '/' . trim($fileSubPath, '/\\'))) {
+            if (file_exists(rtrim($path, '/\\') . '/' . trim($fileSubPath, '/\\'))) {
                 return true;
             }
         }
