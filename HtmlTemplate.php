@@ -202,7 +202,8 @@ class HtmlTemplate
     protected function fileExists(string $fileSubPath): bool
     {
         foreach ($this->paths as $path) {
-            if (file_exists(trim($path, '/') . '/' . trim($fileSubPath, '/'))) {
+            print('Check'.trim($path, '/\\') . '/' . trim($fileSubPath, '/\\')."\r\n");
+            if (file_exists(trim($path, '/\\') . '/' . trim($fileSubPath, '/\\'))) {
                 return true;
             }
         }
@@ -220,7 +221,7 @@ class HtmlTemplate
     protected function fileGetContents(string $fileSubPath): string
     {
         foreach ($this->paths as $path) {
-            $finalPath = trim($path, '/') . '/' . trim($fileSubPath, '/');
+            $finalPath = trim($path, '/\\') . '/' . trim($fileSubPath, '/\\');
             if (file_exists($finalPath)) {
                 return file_get_contents($finalPath);
             }
