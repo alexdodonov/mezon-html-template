@@ -202,7 +202,6 @@ class HtmlTemplate
     protected function fileExists(string $fileSubPath): bool
     {
         foreach ($this->paths as $path) {
-            print('Check'.trim($path, '/\\') . '/' . trim($fileSubPath, '/\\')."\r\n");
             if (file_exists(trim($path, '/\\') . '/' . trim($fileSubPath, '/\\'))) {
                 return true;
             }
