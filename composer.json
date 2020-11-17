@@ -28,7 +28,10 @@
 	"prefer-stable": true,
 	"autoload": {
 		"psr-4": {
-			"Mezon\\HtmlTemplate\\": ""
+			"Mezon\\HtmlTemplate\\": "./Mezon/HtmlTemplate"
 		}
+	},
+	"scripts": {
+		"test": "php ./vendor/phpunit/phpunit/phpunit --testsuite all"
 	}
 }

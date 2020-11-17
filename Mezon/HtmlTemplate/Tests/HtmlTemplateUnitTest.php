@@ -1,10 +1,13 @@
 <?php
 namespace Mezon\HtmlTemplate\Tests;
 
+use Mezon\HtmlTemplate\HtmlTemplate;
+use Mezon\HtmlTemplate\TemplateResources;
+
 class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
 {
 
-    const PATH_TO_TEST_DATA = __DIR__ . '/test-data/';
+    const PATH_TO_TEST_DATA = __DIR__ . '/TestData/';
 
     /**
      * Data provider for constructor tests
@@ -19,13 +22,13 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
                 'index'
             ],
             [
-                HtmlTemplateUnitTest::PATH_TO_TEST_DATA . 'res/',
+                HtmlTemplateUnitTest::PATH_TO_TEST_DATA . 'Res/',
                 'index2'
             ],
             [
                 [
                     HtmlTemplateUnitTest::PATH_TO_TEST_DATA,
-                    HtmlTemplateUnitTest::PATH_TO_TEST_DATA . 'res/'
+                    HtmlTemplateUnitTest::PATH_TO_TEST_DATA . 'Res/'
                 ],
                 'index2'
             ]
@@ -44,9 +47,14 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testConstructor($path, string $template)
     {
         // setup and test body
-        $template = new \Mezon\HtmlTemplate\HtmlTemplate($path, $template, [
+        $resources = new TemplateResources();
+        $resources->addCssFile('./some.css');
+        $resources->addJsFile('./some.js');
+
+        $template = new HtmlTemplate($path, $template, [
             'main'
         ]);
+        $template->setResources($resources);
 
         $content = $template->compile();
 
@@ -88,7 +96,7 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Exception::class);
 
         // setup and test body
-        $template = new \Mezon\HtmlTemplate\HtmlTemplate($path, $template, [
+        $template = new HtmlTemplate($path, $template, [
             'main'
         ]);
 
@@ -102,7 +110,7 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testCompile()
     {
         // setup
-        $template = new \Mezon\HtmlTemplate\HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, 'index', [
+        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, 'index', [
             'main'
         ]);
         $_SERVER['HTTP_HOST'] = 'host';
@@ -120,7 +128,7 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testGetUnexistingBlock()
     {
         // setup and test body
-        $template = new \Mezon\HtmlTemplate\HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, 'index', [
+        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, 'index', [
             'main'
         ]);
 
@@ -136,7 +144,7 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testGetExistingVar(): void
     {
         // setup
-        $template = new \Mezon\HtmlTemplate\HtmlTemplate(__DIR__);
+        $template = new HtmlTemplate(__DIR__);
         $template->setPageVar('existing-var', 'existing value');
 
         // test body and assertions
@@ -149,7 +157,7 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testGetUnExistingVar(): void
     {
         // setup
-        $template = new \Mezon\HtmlTemplate\HtmlTemplate(__DIR__);
+        $template = new HtmlTemplate(__DIR__);
 
         // assertions
         $this->expectException(\Exception::class);
@@ -164,7 +172,7 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testSetPageVars(): void
     {
         // setup
-        $template = new \Mezon\HtmlTemplate\HtmlTemplate(__DIR__);
+        $template = new HtmlTemplate(__DIR__);
 
         // test body
         $template->setPageVars([
@@ -185,10 +193,10 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testSetPageVarFromFile(): void
     {
         // setup
-        $template = new \Mezon\HtmlTemplate\HtmlTemplate(__DIR__);
+        $template = new HtmlTemplate(__DIR__);
 
         // test body
-        $template->setPageVarFromFile('title', __DIR__ . '/res/var.txt');
+        $template->setPageVarFromFile('title', __DIR__ . '/Res/var.txt');
 
         // assertions
         $this->assertEquals('some var from file', $template->getPageVar('title'));
@@ -200,7 +208,7 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testPathsManipulations(): void
     {
         // setup
-        $template = new \Mezon\HtmlTemplate\HtmlTemplate(__DIR__);
+        $template = new HtmlTemplate(__DIR__);
 
         // assertions
         $this->assertContains(__DIR__, $template->getPaths());

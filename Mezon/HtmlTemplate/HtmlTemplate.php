@@ -1,6 +1,9 @@
 <?php
 namespace Mezon\HtmlTemplate;
 
+use Mezon\Conf\Conf;
+use Mezon\TemplateEngine\TemplateEngine;
+
 /**
  * Class HtmlTemplate
  *
@@ -27,7 +30,7 @@ class HtmlTemplate
     /**
      * Loaded resources
      */
-    private $resources = false;
+    private $resources = null;
 
     /**
      * Path to the template folder
@@ -73,8 +76,6 @@ class HtmlTemplate
         }
 
         $this->resetLayout($template);
-
-        $this->resources = new \Mezon\HtmlTemplate\TemplateResources();
 
         $this->blocks = [];
 
@@ -187,9 +188,9 @@ class HtmlTemplate
             }
         }
 
-        $content = \Mezon\TemplateEngine\TemplateEngine::unwrapBlocks($content, $this->pageVars);
+        $content = TemplateEngine::unwrapBlocks($content, $this->pageVars);
 
-        $content = \Mezon\TemplateEngine\TemplateEngine::compileSwitch($content);
+        $content = TemplateEngine::compileSwitch($content);
     }
 
     /**
@@ -243,8 +244,8 @@ class HtmlTemplate
 
         if ($this->fileExists($template)) {
             $this->template = $this->fileGetContents($template);
-        } elseif ($this->fileExists('res/templates/' . $template)) {
-            $this->template = $this->fileGetContents('res/templates/' . $template);
+        } elseif ($this->fileExists('Res/Templates/' . $template)) {
+            $this->template = $this->fileGetContents('Res/Templates/' . $template);
         } else {
             throw (new \Exception(
                 'Template file ' . $template . ' on the paths ' . implode(', ', $this->paths) . ' was not found',
@@ -261,16 +262,18 @@ class HtmlTemplate
     {
         $content = '';
 
-        $cSSFiles = $this->resources->getCssFiles();
-        foreach ($cSSFiles as $cSSFile) {
-            $content .= '
+        if ($this->resources !== null) {
+            $cssFiles = $this->resources->getCssFiles();
+            foreach ($cssFiles as $cSSFile) {
+                $content .= '
         <link href="' . $cSSFile . '" rel="stylesheet" type="text/css">';
-        }
+            }
 
-        $jSFiles = $this->resources->getJsFiles();
-        foreach ($jSFiles as $jSFile) {
-            $content .= '
+            $jsFiles = $this->resources->getJsFiles();
+            foreach ($jsFiles as $jSFile) {
+                $content .= '
         <script src="' . $jSFile . '"></script>';
+            }
         }
 
         return $content;
@@ -284,8 +287,8 @@ class HtmlTemplate
     public function compile(): string
     {
         $this->setPageVar('resources', $this->_getResources());
-        $this->setPageVar('mezon-http-path', \Mezon\Conf\Conf::getConfigValue('@mezon-http-path'));
-        $this->setPageVar('service-http-path', \Mezon\Conf\Conf::getConfigValue('@service-http-path'));
+        $this->setPageVar('mezon-http-path', Conf::getConfigValue('@mezon-http-path'));
+        $this->setPageVar('service-http-path', Conf::getConfigValue('@service-http-path'));
         if (isset($_SERVER['HTTP_HOST'])) {
             $this->setPageVar('host', $_SERVER['HTTP_HOST']);
         }
@@ -309,10 +312,10 @@ class HtmlTemplate
      */
     protected function readBlock(string $blockName): string
     {
-        if ($this->fileExists('res/blocks/' . $blockName . '.tpl')) {
-            $blockContent = $this->fileGetContents('res/blocks/' . $blockName . '.tpl');
-        } elseif ($this->fileExists('blocks/' . $blockName . '.tpl')) {
-            $blockContent = $this->fileGetContents('blocks/' . $blockName . '.tpl');
+        if ($this->fileExists('Res/Blocks/' . $blockName . '.tpl')) {
+            $blockContent = $this->fileGetContents('Res/Blocks/' . $blockName . '.tpl');
+        } elseif ($this->fileExists('Blocks/' . $blockName . '.tpl')) {
+            $blockContent = $this->fileGetContents('Blocks/' . $blockName . '.tpl');
         } else {
             throw (new \Exception('Block ' . $blockName . ' was not found', - 1));
         }
@@ -340,5 +343,16 @@ class HtmlTemplate
     public function getBlock(string $blockName): string
     {
         return $this->readBlock($blockName);
+    }
+
+    /**
+     * Method sets template resources
+     *
+     * @param TemplateResources $resources
+     *            resources
+     */
+    public function setResources(TemplateResources $resources): void
+    {
+        $this->resources = $resources;
     }
 }
