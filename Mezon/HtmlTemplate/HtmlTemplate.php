@@ -305,6 +305,22 @@ class HtmlTemplate
     }
 
     /**
+     * Does block exist
+     * 
+     * @param string $blockName block name
+     * @return bool does block exist?
+     */
+    public function blockExists(string $blockName):bool{
+        if ($this->fileExists('Res/Blocks/' . $blockName . '.tpl')) {
+            return true;
+        } elseif ($this->fileExists('Blocks/' . $blockName . '.tpl')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Method returns block's content
      *
      * @param string $blockName

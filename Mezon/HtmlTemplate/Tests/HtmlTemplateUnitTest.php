@@ -144,7 +144,7 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testGetExistingVar(): void
     {
         // setup
-        $template = new HtmlTemplate(__DIR__);
+        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
         $template->setPageVar('existing-var', 'existing value');
 
         // test body and assertions
@@ -157,7 +157,7 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testGetUnExistingVar(): void
     {
         // setup
-        $template = new HtmlTemplate(__DIR__);
+        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
 
         // assertions
         $this->expectException(\Exception::class);
@@ -172,7 +172,7 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testSetPageVars(): void
     {
         // setup
-        $template = new HtmlTemplate(__DIR__);
+        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
 
         // test body
         $template->setPageVars([
@@ -193,10 +193,10 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testSetPageVarFromFile(): void
     {
         // setup
-        $template = new HtmlTemplate(__DIR__);
+        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
 
         // test body
-        $template->setPageVarFromFile('title', __DIR__ . '/Res/var.txt');
+        $template->setPageVarFromFile('title', HtmlTemplateUnitTest::PATH_TO_TEST_DATA . '/Res/var.txt');
 
         // assertions
         $this->assertEquals('some var from file', $template->getPageVar('title'));
@@ -208,10 +208,10 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     public function testPathsManipulations(): void
     {
         // setup
-        $template = new HtmlTemplate(__DIR__);
+        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
 
         // assertions
-        $this->assertContains(__DIR__, $template->getPaths());
+        $this->assertContains(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, $template->getPaths());
 
         // test body
         $template->addPaths([
@@ -219,7 +219,7 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
         ]);
 
         // assertions
-        $this->assertContains(__DIR__, $template->getPaths());
+        $this->assertContains(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, $template->getPaths());
         $this->assertContains('some-path', $template->getPaths());
 
         // test body
@@ -228,7 +228,21 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
         ]);
 
         // asssertions
-        $this->assertNotContains(__DIR__, $template->getPaths());
+        $this->assertNotContains(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, $template->getPaths());
         $this->assertContains('some-path', $template->getPaths());
+    }
+
+    /**
+     * Testing method
+     */
+    public function testBlockExists(): void
+    {
+        // setup
+        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+
+        // test body and assertions
+        $this->assertTrue($template->blockExists('block1'));
+        $this->assertTrue($template->blockExists('block2'));
+        $this->assertFalse($template->blockExists('block3'));
     }
 }
