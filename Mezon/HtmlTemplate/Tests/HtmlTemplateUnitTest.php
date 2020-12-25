@@ -203,6 +203,21 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Testing method setPageVarFromBlock
+     */
+    public function testSetPageVarFromBlock(): void
+    {
+        // setup
+        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+
+        // test body
+        $template->setPageVarFromBlock('block-var', 'block3');
+
+        // assertions
+        $this->assertEquals('block3', $template->getPageVar('block-var'));
+    }
+
+    /**
      * Testing methods addPaths, setPaths, getPaths
      */
     public function testPathsManipulations(): void
@@ -243,6 +258,6 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
         // test body and assertions
         $this->assertTrue($template->blockExists('block1'));
         $this->assertTrue($template->blockExists('block2'));
-        $this->assertFalse($template->blockExists('block3'));
+        $this->assertFalse($template->blockExists('block4'));
     }
 }

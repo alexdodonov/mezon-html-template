@@ -164,13 +164,26 @@ class HtmlTemplate
      * Setting page variables from file's content
      *
      * @param string $var
-     *            Variable name
+     *            variable name
      * @param mixed $path
-     *            Path to file
+     *            path to file
      */
     public function setPageVarFromFile(string $var, string $path): void
     {
         $this->setPageVar($var, file_get_contents($path));
+    }
+
+    /**
+     * Setting page variables from block
+     *
+     * @param string $var
+     *            variable name
+     * @param mixed $blockName
+     *            block name
+     */
+    public function setPageVarFromBlock(string $var, string $blockName): void
+    {
+        $this->setPageVar($var, $this->getBlock($blockName));
     }
 
     /**
@@ -306,11 +319,13 @@ class HtmlTemplate
 
     /**
      * Does block exist
-     * 
-     * @param string $blockName block name
+     *
+     * @param string $blockName
+     *            block name
      * @return bool does block exist?
      */
-    public function blockExists(string $blockName):bool{
+    public function blockExists(string $blockName): bool
+    {
         if ($this->fileExists('Res/Blocks/' . $blockName . '.tpl')) {
             return true;
         } elseif ($this->fileExists('Blocks/' . $blockName . '.tpl')) {
