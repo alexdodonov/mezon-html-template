@@ -194,6 +194,12 @@ class HtmlTemplate
      */
     public function compilePageVars(string &$content): void
     {
+        // TODO substitute untill nothing can be substituted
+        // for example
+        // while (($tmp = preg_match_count('{mecro-name}', $content))<=$prevCount){
+        // here do the nextward loop
+        // $prevCount = $tmp;
+        // }
         foreach ($this->pageVars as $key => $value) {
             if (is_array($value) === false && is_object($value) === false) {
                 // only scalars can be substituted in this way
@@ -374,6 +380,26 @@ class HtmlTemplate
     public function getBlock(string $blockName): string
     {
         return $this->readBlock($blockName);
+    }
+
+    /**
+     * Method returns file data
+     *
+     * @param string $filePath
+     *            path to file
+     * @return string file content
+     */
+    public function getFile(string $filePath): string
+    {
+        foreach ($this->paths as $path) {
+            $fullPath = rtrim($path, '\\/') . '/' . ltrim($filePath, '\\/');
+
+            if (file_exists($fullPath)) {
+                return file_get_contents($fullPath);
+            }
+        }
+
+        throw (new \Exception('File "' . $filePath . '" was not found in paths : ' . implode($this->paths)));
     }
 
     /**

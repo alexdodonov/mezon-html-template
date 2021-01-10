@@ -260,4 +260,34 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($template->blockExists('block2'));
         $this->assertFalse($template->blockExists('block4'));
     }
+
+    /**
+     * Testing method getFile
+     */
+    public function testGetFile(): void
+    {
+        // setup
+        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+
+        // test body
+        $result = $template->getFile('/Blocks/block3.tpl');
+
+        // assertions
+        $this->assertEquals('block3', $result);
+    }
+
+    /**
+     * Testing exception
+     */
+    public function testGetFileException(): void
+    {
+        // assertions
+        $this->expectException(\Exception::class);
+
+        // setup
+        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+
+        // test body
+        $template->getFile('/Blocks/unsexisting.tpl');
+    }
 }
