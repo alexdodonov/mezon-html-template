@@ -279,6 +279,7 @@ class HtmlTemplate
      */
     private function _getResources(): string
     {
+        // TODO move this method to tmplate resources
         $content = '';
 
         if ($this->resources !== null) {
