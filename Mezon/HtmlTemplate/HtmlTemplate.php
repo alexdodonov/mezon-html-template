@@ -219,7 +219,7 @@ class HtmlTemplate
      *            file sub path
      * @return bool true if the file exists, false otherwise
      */
-    protected function fileExists(string $fileSubPath): bool
+    public function fileExists(string $fileSubPath): bool
     {
         foreach ($this->paths as $path) {
             if (file_exists(rtrim($path, '/\\') . '/' . trim($fileSubPath, '/\\'))) {
