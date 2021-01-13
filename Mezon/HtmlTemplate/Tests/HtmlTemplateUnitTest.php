@@ -3,8 +3,9 @@ namespace Mezon\HtmlTemplate\Tests;
 
 use Mezon\HtmlTemplate\HtmlTemplate;
 use Mezon\HtmlTemplate\TemplateResources;
+use PHPUnit\Framework\TestCase;
 
-class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
+class HtmlTemplateUnitTest extends TestCase
 {
 
     const PATH_TO_TEST_DATA = __DIR__ . '/TestData/';
@@ -289,5 +290,23 @@ class HtmlTemplateUnitTest extends \PHPUnit\Framework\TestCase
 
         // test body
         $template->getFile('/Blocks/unsexisting.tpl');
+    }
+
+    /**
+     * Testing method
+     */
+    public function testRecursiveVars(): void
+    {
+        // setup
+        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+        $template->setPageVar('var-rec1', 'var1-was-substituted');
+        $template->setPageVar('var-rec2', '{var-rec1}');
+        $template->setPageVar('title', '{var-rec2}');
+
+        // test body
+        $content = $template->compile();
+
+        // assertions
+        $this->assertStringContainsString('var1-was-substituted', $content);
     }
 }

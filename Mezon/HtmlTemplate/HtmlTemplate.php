@@ -194,18 +194,25 @@ class HtmlTemplate
      */
     public function compilePageVars(string &$content): void
     {
-        // TODO substitute untill nothing can be substituted
-        // for example
-        // while (($tmp = preg_match_count('{mecro-name}', $content))<=$prevCount){
-        // here do the nextward loop
-        // $prevCount = $tmp;
-        // }
-        foreach ($this->pageVars as $key => $value) {
-            if (is_array($value) === false && is_object($value) === false) {
-                // only scalars can be substituted in this way
-                $content = str_replace('{' . $key . '}', $value, $content);
+        $prevVarsHash = '';
+
+        do {
+            foreach ($this->pageVars as $key => $value) {
+                if (is_array($value) === false && is_object($value) === false) {
+                    // only scalars can be substituted in this way
+                    $content = str_replace('{' . $key . '}', $value, $content);
+                }
             }
-        }
+
+            // trying to substitute recursive
+            $matches = [];
+            preg_match('/\{[a-zA-Z0-9\-]{1,1000}\}/m', $content, $matches);
+            if ($prevVarsHash !== md5(implode('', $matches))) {
+                $prevVarsHash = md5(implode('', $matches));
+            } else {
+                break;
+            }
+        } while (true);
 
         $content = TemplateEngine::unwrapBlocks($content, $this->pageVars);
 
