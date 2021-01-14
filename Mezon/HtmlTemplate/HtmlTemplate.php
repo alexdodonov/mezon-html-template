@@ -280,40 +280,13 @@ class HtmlTemplate
     }
 
     /**
-     * Method returns compiled page resources
-     *
-     * @return string Compiled resources includers
-     */
-    private function _getResources(): string
-    {
-        // TODO move this method to tmplate resources
-        $content = '';
-
-        if ($this->resources !== null) {
-            $cssFiles = $this->resources->getCssFiles();
-            foreach ($cssFiles as $cSSFile) {
-                $content .= '
-        <link href="' . $cSSFile . '" rel="stylesheet" type="text/css">';
-            }
-
-            $jsFiles = $this->resources->getJsFiles();
-            foreach ($jsFiles as $jSFile) {
-                $content .= '
-        <script src="' . $jSFile . '"></script>';
-            }
-        }
-
-        return $content;
-    }
-
-    /**
      * Compile template
      *
      * @return string Compiled template
      */
     public function compile(): string
     {
-        $this->setPageVar('resources', $this->_getResources());
+        $this->setPageVar('resources', $this->resources === null ? '' : $this->resources->compileResources());
         $this->setPageVar('mezon-http-path', Conf::getConfigValue('@mezon-http-path'));
         $this->setPageVar('service-http-path', Conf::getConfigValue('@service-http-path'));
         if (isset($_SERVER['HTTP_HOST'])) {

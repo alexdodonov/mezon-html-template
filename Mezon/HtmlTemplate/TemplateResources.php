@@ -123,4 +123,26 @@ class TemplateResources
 
         $this->jsFiles = [];
     }
+
+    /**
+     * Method returns compiled page resources
+     *
+     * @return string Compiled resources includers
+     */
+    public function compileResources(): string
+    {
+        $content = '';
+
+        foreach ($this->cssFiles as $cssFile) {
+            $content .= '
+        <link href="' . $cssFile . '" rel="stylesheet" type="text/css">';
+        }
+
+        foreach ($this->jsFiles as $jsFile) {
+            $content .= '
+        <script src="' . $jsFile . '"></script>';
+        }
+
+        return $content;
+    }
 }
