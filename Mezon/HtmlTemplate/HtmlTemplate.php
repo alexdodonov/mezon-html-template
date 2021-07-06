@@ -274,7 +274,7 @@ class HtmlTemplate
             $this->template = $this->fileGetContents('Res/Templates/' . $template);
         } else {
             throw (new \Exception(
-                'Template file ' . $template . ' on the paths ' . implode(', ', $this->paths) . ' was not found',
+                'Template file ' . $template . ' on the paths [' . implode(', ', $this->paths) . '] was not found',
                 - 1));
         }
     }
