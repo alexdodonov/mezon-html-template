@@ -1,4 +1,4 @@
-# HTMP template class
+# HTML template class
 [![Build Status](https://travis-ci.com/alexdodonov/mezon-html-template.svg?branch=master)](https://travis-ci.com/alexdodonov/mezon-html-template) [![codecov](https://codecov.io/gh/alexdodonov/mezon-html-template/branch/master/graph/badge.svg)](https://codecov.io/gh/alexdodonov/mezon-html-template) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alexdodonov/mezon-html-template/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alexdodonov/mezon-html-template/?branch=master)
 
 ## Installation
