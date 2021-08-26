@@ -11,13 +11,13 @@ composer require mezon/html-template
 
 ## Usage
 
-First of all you need to create object
+First of all you need to create object.
 
 ```PHP
 $template = new \Mezon\HtmlTemplate\HtmlTemplate('./main-template/');
 ```
 
-This code assumes that you have all template resources in the directory `./main-template/`
+This code assumes that you have all template resources in the directory `./main-template/`.
 
 But you can also specify a list of paths, and while template compilation they all will be scanned for static files.
 
