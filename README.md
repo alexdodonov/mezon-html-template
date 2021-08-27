@@ -1,4 +1,4 @@
-# HTMP template class
+# HTML template class
 [![Build Status](https://travis-ci.com/alexdodonov/mezon-html-template.svg?branch=master)](https://travis-ci.com/alexdodonov/mezon-html-template) [![codecov](https://codecov.io/gh/alexdodonov/mezon-html-template/branch/master/graph/badge.svg)](https://codecov.io/gh/alexdodonov/mezon-html-template) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alexdodonov/mezon-html-template/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alexdodonov/mezon-html-template/?branch=master)
 
 ## Installation
@@ -11,13 +11,13 @@ composer require mezon/html-template
 
 ## Usage
 
-First of all you need to create object
+First of all you need to create object.
 
 ```PHP
 $template = new \Mezon\HtmlTemplate\HtmlTemplate('./main-template/');
 ```
 
-This code assumes that you have all template resources in the directory './main-template/'
+This code assumes that you have all template resources in the directory `./main-template/`.
 
 But you can also specify a list of paths, and while template compilation they all will be scanned for static files.
 
