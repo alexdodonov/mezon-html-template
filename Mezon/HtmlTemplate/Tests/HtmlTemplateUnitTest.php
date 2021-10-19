@@ -5,6 +5,10 @@ use Mezon\HtmlTemplate\HtmlTemplate;
 use Mezon\HtmlTemplate\TemplateResources;
 use PHPUnit\Framework\TestCase;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class HtmlTemplateUnitTest extends TestCase
 {
 
@@ -45,7 +49,7 @@ class HtmlTemplateUnitTest extends TestCase
      *            template's name
      * @dataProvider constructorDataProvider
      */
-    public function testConstructor($path, string $template)
+    public function testConstructor($path, string $template): void
     {
         // setup and test body
         $resources = new TemplateResources();
@@ -92,7 +96,7 @@ class HtmlTemplateUnitTest extends TestCase
      *            template's name
      * @dataProvider invalidConstructorDataProvider
      */
-    public function testInvalidConstructor($path, string $template)
+    public function testInvalidConstructor($path, string $template): void
     {
         $this->expectException(\Exception::class);
 
@@ -100,15 +104,12 @@ class HtmlTemplateUnitTest extends TestCase
         $template = new HtmlTemplate($path, $template, [
             'main'
         ]);
-
-        // debug if the exception was not thrown
-        var_dump($template);
     }
 
     /**
      * Testing that all unused place holders will be removed
      */
-    public function testCompile()
+    public function testCompile(): void
     {
         // setup
         $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, 'index', [
@@ -126,7 +127,7 @@ class HtmlTemplateUnitTest extends TestCase
     /**
      * Testing unexisting block
      */
-    public function testGetUnexistingBlock()
+    public function testGetUnexistingBlock(): void
     {
         // setup and test body
         $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, 'index', [

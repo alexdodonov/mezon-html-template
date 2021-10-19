@@ -23,26 +23,17 @@ class TemplateResources
 
     /**
      * Custom CSS files to be included
+     *
+     * @var array
      */
-    private $cssFiles = false;
+    private $cssFiles = [];
 
     /**
      * Custom JS files to be included
+     *
+     * @var array
      */
-    private $jsFiles = false;
-
-    /**
-     * Constructor.
-     */
-    function __construct()
-    {
-        if ($this->cssFiles === false) {
-            $this->cssFiles = [];
-        }
-        if ($this->jsFiles === false) {
-            $this->jsFiles = [];
-        }
-    }
+    private $jsFiles = [];
 
     /**
      * Additing single CSS file
@@ -50,7 +41,7 @@ class TemplateResources
      * @param string $cssFile
      *            CSS file
      */
-    function addCssFile(string $cssFile)
+    function addCssFile(string $cssFile): void
     {
         // additing only unique paths
         if (array_search($cssFile, $this->cssFiles) === false) {
@@ -64,7 +55,7 @@ class TemplateResources
      * @param array $cssFiles
      *            CSS files
      */
-    function addCssFiles(array $cssFiles)
+    function addCssFiles(array $cssFiles): void
     {
         foreach ($cssFiles as $cssFile) {
             $this->addCssFile($cssFile);
@@ -73,8 +64,10 @@ class TemplateResources
 
     /**
      * Method returning added CSS files
+     *
+     * @return array list of CSS files
      */
-    function getCssFiles()
+    function getCssFiles(): array
     {
         return $this->cssFiles;
     }
@@ -85,7 +78,7 @@ class TemplateResources
      * @param string $jsFile
      *            JS file
      */
-    function addJsFile($jsFile)
+    function addJsFile(string $jsFile): void
     {
         // additing only unique paths
         if (array_search($jsFile, $this->jsFiles) === false) {
@@ -99,7 +92,7 @@ class TemplateResources
      * @param array $jsFiles
      *            JS files
      */
-    function addJsFiles(array $jsFiles)
+    function addJsFiles(array $jsFiles): void
     {
         foreach ($jsFiles as $jsFile) {
             $this->addJsFile($jsFile);
@@ -107,7 +100,9 @@ class TemplateResources
     }
 
     /**
-     * Method returning added JS files.
+     * Method returning added JS files
+     *
+     * @return array list of JS files
      */
     function getJsFiles()
     {
@@ -117,7 +112,7 @@ class TemplateResources
     /**
      * Method clears loaded resources.
      */
-    function clear()
+    function clear(): void
     {
         $this->cssFiles = [];
 

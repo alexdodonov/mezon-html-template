@@ -24,11 +24,15 @@ class HtmlTemplate
 
     /**
      * Loaded template content
+     * 
+     * @var string
      */
-    private $template = false;
+    private $template = '';
 
     /**
      * Loaded resources
+     * 
+     * @var ?TemplateResources
      */
     private $resources = null;
 
@@ -37,7 +41,7 @@ class HtmlTemplate
      *
      * @var array
      */
-    private $paths = false;
+    private $paths = [];
 
     /**
      * Page blocks
@@ -56,7 +60,7 @@ class HtmlTemplate
     /**
      * Template сonstructor
      *
-     * @param string|array $path
+     * @param string|array|mixed $path
      *            Path to template
      * @param string $template
      *            Page layout

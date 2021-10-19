@@ -1,15 +1,18 @@
 <?php
-
 use PHPUnit\Framework\TestCase;
 use Mezon\HtmlTemplate\TemplateResources;
 
+/**
+ * 
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class TemplateResourcesUnitTest extends TestCase
 {
 
     /**
-     * Testing additing CSS file.
+     * Testing additing CSS file
      */
-    public function testAdditingSingleCSSFile()
+    public function testAdditingSingleCSSFile(): void
     {
         $templateResources = new TemplateResources();
 
@@ -23,9 +26,9 @@ class TemplateResourcesUnitTest extends TestCase
     }
 
     /**
-     * Testing additing CSS files.
+     * Testing additing CSS files
      */
-    public function testAdditingMultypleCSSFiles()
+    public function testAdditingMultypleCSSFiles(): void
     {
         $templateResources = new TemplateResources();
 
@@ -42,9 +45,9 @@ class TemplateResourcesUnitTest extends TestCase
     }
 
     /**
-     * Testing additing CSS files.
+     * Testing additing CSS files
      */
-    public function testDoublesCSSExcluding()
+    public function testDoublesCSSExcluding(): void
     {
         $templateResources = new TemplateResources();
 
@@ -65,9 +68,9 @@ class TemplateResourcesUnitTest extends TestCase
     }
 
     /**
-     * Testing additing JS file.
+     * Testing additing JS file
      */
-    public function testAdditingSingleJSFile()
+    public function testAdditingSingleJSFile(): void
     {
         $templateResources = new TemplateResources();
 
@@ -81,9 +84,9 @@ class TemplateResourcesUnitTest extends TestCase
     }
 
     /**
-     * Testing additing JS files.
+     * Testing additing JS files
      */
-    public function testAdditingMultypleJSFiles()
+    public function testAdditingMultypleJSFiles(): void
     {
         $templateResources = new TemplateResources();
 
@@ -100,9 +103,9 @@ class TemplateResourcesUnitTest extends TestCase
     }
 
     /**
-     * Testing additing JS files.
+     * Testing additing JS files
      */
-    public function testDoublesJSExcluding()
+    public function testDoublesJSExcluding(): void
     {
         $templateResources = new TemplateResources();
 
