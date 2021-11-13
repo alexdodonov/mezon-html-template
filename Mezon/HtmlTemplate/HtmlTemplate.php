@@ -291,8 +291,8 @@ class HtmlTemplate
     public function compile(): string
     {
         $this->setPageVar('resources', $this->resources === null ? '' : $this->resources->compileResources());
-        $this->setPageVar('mezon-http-path', Conf::getConfigValue('@mezon-http-path'));
-        $this->setPageVar('service-http-path', Conf::getConfigValue('@service-http-path'));
+        $this->setPageVar('mezon-http-path', Conf::getConfigValueAsString('@mezon-http-path'));
+        $this->setPageVar('service-http-path', Conf::getConfigValueAsString('@service-http-path'));
         if (isset($_SERVER['HTTP_HOST'])) {
             $this->setPageVar('host', $_SERVER['HTTP_HOST']);
         }

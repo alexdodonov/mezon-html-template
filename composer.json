@@ -17,8 +17,8 @@
 	},
 	"require": {
 		"php": ">=7.2.0",
-		"mezon/template-engine" : "^1.0.0",
-		"mezon/conf" : "^1.0.0"
+		"mezon/template-engine" : "1.0.*",
+		"mezon/conf" : "1.1.*"
 	},
 	"support": {
 		"email": "alexey@dodonov.pro",
