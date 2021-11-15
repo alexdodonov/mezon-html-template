@@ -18,7 +18,7 @@
 	"require": {
 		"php": ">=7.2.0",
 		"mezon/template-engine" : "1.0.*",
-		"mezon/conf" : "1.1.*"
+		"mezon/conf" : "1.2.*"
 	},
 	"support": {
 		"email": "alexey@dodonov.pro",
@@ -36,6 +36,6 @@
 	"scripts": {
 		"test": "php ./vendor/phpunit/phpunit/phpunit --testsuite all",
 		"psalm": "php ./vendor/vimeo/psalm/psalm --show-info=true --no-cache",
-		"infection": "php ./vendor/infection/infection/bin/infection"
+		"infection": "php ./vendor/infection/infection/bin/infection --threads=4 --min-msi=63"
 	}
 }
