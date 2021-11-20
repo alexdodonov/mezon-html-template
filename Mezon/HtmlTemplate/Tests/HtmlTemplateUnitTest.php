@@ -2,7 +2,6 @@
 namespace Mezon\HtmlTemplate\Tests;
 
 use Mezon\HtmlTemplate\HtmlTemplate;
-use Mezon\HtmlTemplate\TemplateResources;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -11,8 +10,6 @@ use PHPUnit\Framework\TestCase;
  */
 class HtmlTemplateUnitTest extends TestCase
 {
-
-    const PATH_TO_TEST_DATA = __DIR__ . '/TestData/';
 
     /**
      * Data provider for constructor tests
@@ -23,87 +20,21 @@ class HtmlTemplateUnitTest extends TestCase
     {
         return [
             [
-                HtmlTemplateUnitTest::PATH_TO_TEST_DATA,
+                HtmlTemplateBaseTest::PATH_TO_TEST_DATA,
                 'index'
             ],
             [
-                HtmlTemplateUnitTest::PATH_TO_TEST_DATA . 'Res/',
+                HtmlTemplateBaseTest::PATH_TO_TEST_DATA . 'Res/',
                 'index2'
             ],
             [
                 [
-                    HtmlTemplateUnitTest::PATH_TO_TEST_DATA,
-                    HtmlTemplateUnitTest::PATH_TO_TEST_DATA . 'Res/'
+                    HtmlTemplateBaseTest::PATH_TO_TEST_DATA,
+                    HtmlTemplateBaseTest::PATH_TO_TEST_DATA . 'Res/'
                 ],
                 'index2'
             ]
         ];
-    }
-
-    /**
-     * Testing construction with default path
-     *
-     * @param string|array $path
-     *            paths to content
-     * @param string $template
-     *            template's name
-     * @dataProvider constructorDataProvider
-     */
-    public function testConstructor($path, string $template): void
-    {
-        // setup and test body
-        $resources = new TemplateResources();
-        $resources->addCssFile('./some.css');
-        $resources->addJsFile('./some.js');
-
-        $template = new HtmlTemplate($path, $template, [
-            'main'
-        ]);
-        $template->setResources($resources);
-
-        $content = $template->compile();
-
-        // assertions
-        $this->assertStringContainsString('<body>', $content, 'Layout was not setup');
-        $this->assertStringContainsString('<section>', $content, 'Block was not setup');
-    }
-
-    /**
-     * Data provider for constructor tests
-     *
-     * @return array
-     */
-    public function invalidConstructorDataProvider(): array
-    {
-        return [
-            [
-                __DIR__,
-                'index3'
-            ],
-            [
-                false,
-                'index4'
-            ]
-        ];
-    }
-
-    /**
-     * Testing invalid construction
-     *
-     * @param string|array $path
-     *            paths to content
-     * @param string $template
-     *            template's name
-     * @dataProvider invalidConstructorDataProvider
-     */
-    public function testInvalidConstructor($path, string $template): void
-    {
-        $this->expectException(\Exception::class);
-
-        // setup and test body
-        $template = new HtmlTemplate($path, $template, [
-            'main'
-        ]);
     }
 
     /**
@@ -112,7 +43,7 @@ class HtmlTemplateUnitTest extends TestCase
     public function testCompile(): void
     {
         // setup
-        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, 'index', [
+        $template = new HtmlTemplate(HtmlTemplateBaseTest::PATH_TO_TEST_DATA, 'index', [
             'main'
         ]);
         $_SERVER['HTTP_HOST'] = 'host';
@@ -130,7 +61,7 @@ class HtmlTemplateUnitTest extends TestCase
     public function testGetUnexistingBlock(): void
     {
         // setup and test body
-        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, 'index', [
+        $template = new HtmlTemplate(HtmlTemplateBaseTest::PATH_TO_TEST_DATA, 'index', [
             'main'
         ]);
 
@@ -146,7 +77,7 @@ class HtmlTemplateUnitTest extends TestCase
     public function testGetExistingVar(): void
     {
         // setup
-        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+        $template = new HtmlTemplate(HtmlTemplateBaseTest::PATH_TO_TEST_DATA);
         $template->setPageVar('existing-var', 'existing value');
 
         // test body and assertions
@@ -159,7 +90,7 @@ class HtmlTemplateUnitTest extends TestCase
     public function testGetUnExistingVar(): void
     {
         // setup
-        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+        $template = new HtmlTemplate(HtmlTemplateBaseTest::PATH_TO_TEST_DATA);
 
         // assertions
         $this->expectException(\Exception::class);
@@ -174,7 +105,7 @@ class HtmlTemplateUnitTest extends TestCase
     public function testSetPageVars(): void
     {
         // setup
-        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+        $template = new HtmlTemplate(HtmlTemplateBaseTest::PATH_TO_TEST_DATA);
 
         // test body
         $template->setPageVars([
@@ -195,10 +126,10 @@ class HtmlTemplateUnitTest extends TestCase
     public function testSetPageVarFromFile(): void
     {
         // setup
-        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+        $template = new HtmlTemplate(HtmlTemplateBaseTest::PATH_TO_TEST_DATA);
 
         // test body
-        $template->setPageVarFromFile('title', HtmlTemplateUnitTest::PATH_TO_TEST_DATA . '/Res/var.txt');
+        $template->setPageVarFromFile('title', HtmlTemplateBaseTest::PATH_TO_TEST_DATA . '/Res/var.txt');
 
         // assertions
         $this->assertEquals('some var from file', $template->getPageVar('title'));
@@ -210,7 +141,7 @@ class HtmlTemplateUnitTest extends TestCase
     public function testSetPageVarFromBlock(): void
     {
         // setup
-        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+        $template = new HtmlTemplate(HtmlTemplateBaseTest::PATH_TO_TEST_DATA);
 
         // test body
         $template->setPageVarFromBlock('block-var', 'block3');
@@ -225,10 +156,10 @@ class HtmlTemplateUnitTest extends TestCase
     public function testPathsManipulations(): void
     {
         // setup
-        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+        $template = new HtmlTemplate(HtmlTemplateBaseTest::PATH_TO_TEST_DATA);
 
         // assertions
-        $this->assertContains(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, $template->getPaths());
+        $this->assertContains(HtmlTemplateBaseTest::PATH_TO_TEST_DATA, $template->getPaths());
 
         // test body
         $template->addPaths([
@@ -236,7 +167,7 @@ class HtmlTemplateUnitTest extends TestCase
         ]);
 
         // assertions
-        $this->assertContains(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, $template->getPaths());
+        $this->assertContains(HtmlTemplateBaseTest::PATH_TO_TEST_DATA, $template->getPaths());
         $this->assertContains('some-path', $template->getPaths());
 
         // test body
@@ -245,7 +176,7 @@ class HtmlTemplateUnitTest extends TestCase
         ]);
 
         // asssertions
-        $this->assertNotContains(HtmlTemplateUnitTest::PATH_TO_TEST_DATA, $template->getPaths());
+        $this->assertNotContains(HtmlTemplateBaseTest::PATH_TO_TEST_DATA, $template->getPaths());
         $this->assertContains('some-path', $template->getPaths());
     }
 
@@ -255,7 +186,7 @@ class HtmlTemplateUnitTest extends TestCase
     public function testBlockExists(): void
     {
         // setup
-        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+        $template = new HtmlTemplate(HtmlTemplateBaseTest::PATH_TO_TEST_DATA);
 
         // test body and assertions
         $this->assertTrue($template->blockExists('block1'));
@@ -269,7 +200,7 @@ class HtmlTemplateUnitTest extends TestCase
     public function testGetFile(): void
     {
         // setup
-        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+        $template = new HtmlTemplate(HtmlTemplateBaseTest::PATH_TO_TEST_DATA);
 
         // test body
         $result = $template->getFile('/Blocks/block3.tpl');
@@ -287,7 +218,7 @@ class HtmlTemplateUnitTest extends TestCase
         $this->expectException(\Exception::class);
 
         // setup
-        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+        $template = new HtmlTemplate(HtmlTemplateBaseTest::PATH_TO_TEST_DATA);
 
         // test body
         $template->getFile('/Blocks/unsexisting.tpl');
@@ -299,7 +230,7 @@ class HtmlTemplateUnitTest extends TestCase
     public function testRecursiveVars(): void
     {
         // setup
-        $template = new HtmlTemplate(HtmlTemplateUnitTest::PATH_TO_TEST_DATA);
+        $template = new HtmlTemplate(HtmlTemplateBaseTest::PATH_TO_TEST_DATA);
         $template->setPageVar('var-rec1', 'var1-was-substituted');
         $template->setPageVar('var-rec2', '{var-rec1}');
         $template->setPageVar('title', '{var-rec2}');

@@ -24,14 +24,14 @@ class TemplateResources
     /**
      * Custom CSS files to be included
      *
-     * @var array
+     * @var string[]
      */
     private $cssFiles = [];
 
     /**
      * Custom JS files to be included
      *
-     * @var array
+     * @var string[]
      */
     private $jsFiles = [];
 
@@ -45,14 +45,14 @@ class TemplateResources
     {
         // additing only unique paths
         if (array_search($cssFile, $this->cssFiles) === false) {
-            $this->cssFiles[] = Conf::expandString($cssFile);
+            $this->cssFiles[] = (string) Conf::expandString($cssFile);
         }
     }
 
     /**
      * Additing multyple CSS files
      *
-     * @param array $cssFiles
+     * @param string[] $cssFiles
      *            CSS files
      */
     function addCssFiles(array $cssFiles): void
@@ -82,14 +82,14 @@ class TemplateResources
     {
         // additing only unique paths
         if (array_search($jsFile, $this->jsFiles) === false) {
-            $this->jsFiles[] = Conf::expandString($jsFile);
+            $this->jsFiles[] = (string) Conf::expandString($jsFile);
         }
     }
 
     /**
      * Additing multyple CSS files
      *
-     * @param array $jsFiles
+     * @param string[] $jsFiles
      *            JS files
      */
     function addJsFiles(array $jsFiles): void

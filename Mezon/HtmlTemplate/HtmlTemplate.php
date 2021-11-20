@@ -24,14 +24,14 @@ class HtmlTemplate
 
     /**
      * Loaded template content
-     * 
+     *
      * @var string
      */
     private $template = '';
 
     /**
      * Loaded resources
-     * 
+     *
      * @var ?TemplateResources
      */
     private $resources = null;
@@ -39,33 +39,33 @@ class HtmlTemplate
     /**
      * Path to the template folder
      *
-     * @var array
+     * @var string[]
      */
     private $paths = [];
 
     /**
      * Page blocks
      *
-     * @var array
+     * @var array<string, string>
      */
     private $blocks = [];
 
     /**
      * Page variables
      *
-     * @var array
+     * @var array<string, string|array|object|mixed>
      */
     private $pageVars = [];
 
     /**
      * Template сonstructor
      *
-     * @param string|array|mixed $path
-     *            Path to template
+     * @param string|string[]|mixed $path
+     *            path to template
      * @param string $template
-     *            Page layout
+     *            page layout
      * @param array $blocks
-     *            Page blocks
+     *            page blocks
      */
     public function __construct($path, string $template = 'index', array $blocks = [])
     {
@@ -74,15 +74,17 @@ class HtmlTemplate
                 $path
             ];
         } elseif (is_array($path)) {
+            /** @var string[] $path */
             $this->paths = $path;
         } else {
-            throw (new \Exception('Invalid type for $path parameter'));
+            throw (new \Exception('Invalid type for $path parameter', -1));
         }
 
         $this->resetLayout($template);
 
         $this->blocks = [];
 
+        /** @var string $blockName */
         foreach ($blocks as $blockName) {
             $this->addBlock($blockName);
         }
@@ -95,7 +97,7 @@ class HtmlTemplate
     /**
      * Method adds paths to the setup ones
      *
-     * @param array $paths
+     * @param string[] $paths
      *            paths to directories with the template's static content
      */
     public function addPaths(array $paths): void
@@ -106,7 +108,7 @@ class HtmlTemplate
     /**
      * Resetting paths
      *
-     * @param array $paths
+     * @param string[] $paths
      */
     public function setPaths(array $paths): void
     {
@@ -127,9 +129,9 @@ class HtmlTemplate
      * Setting page variables
      *
      * @param string $var
-     *            Variable name
+     *            variable name
      * @param mixed $value
-     *            Variable value
+     *            variable value
      */
     public function setPageVar(string $var, $value): void
     {
@@ -139,7 +141,9 @@ class HtmlTemplate
     /**
      * Method sets multiple variables
      *
-     * @param array $vars
+     * @param
+     *            array<string, mixed> $vars variables
+     * @psalm-suppress MixedArgumentTypeCoercion, MixedAssignment
      */
     public function setPageVars(array $vars): void
     {
@@ -169,7 +173,7 @@ class HtmlTemplate
      *
      * @param string $var
      *            variable name
-     * @param mixed $path
+     * @param string $path
      *            path to file
      */
     public function setPageVarFromFile(string $var, string $path): void
@@ -182,7 +186,7 @@ class HtmlTemplate
      *
      * @param string $var
      *            variable name
-     * @param mixed $blockName
+     * @param string $blockName
      *            block name
      */
     public function setPageVarFromBlock(string $var, string $blockName): void
@@ -201,8 +205,9 @@ class HtmlTemplate
         $prevVarsHash = '';
 
         do {
+            /** @var string|object|array $value */
             foreach ($this->pageVars as $key => $value) {
-                if (is_array($value) === false && is_object($value) === false) {
+                if (! is_array($value) && ! is_object($value)) {
                     // only scalars can be substituted in this way
                     $content = str_replace('{' . $key . '}', $value, $content);
                 }

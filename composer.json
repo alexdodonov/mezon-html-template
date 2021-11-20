@@ -34,8 +34,8 @@
 		}
 	},
 	"scripts": {
-		"test": "php ./vendor/phpunit/phpunit/phpunit --testsuite all",
+		"test": "php ./vendor/phpunit/phpunit/phpunit --order-by=random --testsuite all",
 		"psalm": "php ./vendor/vimeo/psalm/psalm --show-info=true --no-cache",
-		"infection": "php ./vendor/infection/infection/bin/infection --threads=4 --min-msi=63"
+		"infection": "php ./vendor/infection/infection/bin/infection --threads=4 --min-msi=69"
 	}
 }
