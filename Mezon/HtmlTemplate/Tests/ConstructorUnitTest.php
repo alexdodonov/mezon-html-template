@@ -73,8 +73,7 @@ class ConstructorUnitTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(- 1);
-        $this->expectExceptionMessage(
-            'Template file index3.html on the paths [C:\xampp\mezon-html-template\Mezon\HtmlTemplate\Tests] was not found');
+        $this->expectExceptionMessage('Template file index3.html on the paths [' . __DIR__ . '] was not found');
 
         // setup and test body
         new HtmlTemplate(__DIR__, 'index3', [
