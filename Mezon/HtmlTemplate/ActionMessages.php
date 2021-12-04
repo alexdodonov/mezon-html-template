@@ -63,7 +63,7 @@ trait ActionMessages
      * @param string $successMessage success message
      * @return string compiled success message
      */
-    private function getSuccessMessageContent(string $successMessage): string
+    protected function getSuccessMessageContent(string $successMessage): string
     {
         return $successMessage;
     }
@@ -74,7 +74,7 @@ trait ActionMessages
      * @param string $errorMessage error message
      * @return string compiled error message
      */
-    private function getErrorMessageContent(string $errorMessage): string
+    protected function getErrorMessageContent(string $errorMessage): string
     {
         return $errorMessage;
     }
