@@ -60,7 +60,8 @@ trait ActionMessages
     /**
      * Method sets success action message
      *
-     * @param string $successMessage success message
+     * @param string $successMessage
+     *            success message
      * @return string compiled success message
      */
     protected function getSuccessMessageContent(string $successMessage): string
@@ -71,7 +72,8 @@ trait ActionMessages
     /**
      * Method sets error action message
      *
-     * @param string $errorMessage error message
+     * @param string $errorMessage
+     *            error message
      * @return string compiled error message
      */
     protected function getErrorMessageContent(string $errorMessage): string
@@ -106,18 +108,31 @@ trait ActionMessages
     }
 
     /**
-     * Method returns action message
+     * Method returns error message code
      *
-     * @return string action message code
+     * @return string error message code
      */
-    public static function getActionMessageCode(): string
+    public static function getErrorMessageCode(): string
     {
         if (isset($_GET['error-message'])) {
             return (string) $_GET['error-message'];
-        } elseif (isset($_GET['success-message'])) {
+        } else {
+            // unexisting $_GET['action-message'] will be traited like empty string
+            return isset($_GET['action-message']) ? (string) $_GET['action-message'] : '';
+        }
+    }
+
+    /**
+     * Method returns success message code
+     *
+     * @return string success message code
+     */
+    public static function getSuccessMessageCode(): string
+    {
+        if (isset($_GET['success-message'])) {
             return (string) $_GET['success-message'];
         } else {
-            // unexisting $_GET['action-message'] will be traited like
+            // unexisting $_GET['action-message'] will be traited like empty string
             return isset($_GET['action-message']) ? (string) $_GET['action-message'] : '';
         }
     }
