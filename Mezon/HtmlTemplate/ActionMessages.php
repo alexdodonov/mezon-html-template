@@ -60,23 +60,23 @@ trait ActionMessages
     /**
      * Method sets success action message
      *
-     * @param string $successMessageLocator
+     * @param string $successMessage success message
      * @return string compiled success message
      */
-    private function getSuccessMessageContent(string $successMessageLocator): string
+    private function getSuccessMessageContent(string $successMessage): string
     {
-        return $successMessageLocator;
+        return $successMessage;
     }
 
     /**
      * Method sets error action message
      *
-     * @param string $errorMessageLocator
+     * @param string $errorMessage error message
      * @return string compiled error message
      */
-    private function getErrorMessageContent(string $errorMessageLocator): string
+    private function getErrorMessageContent(string $errorMessage): string
     {
-        return $errorMessageLocator;
+        return $errorMessage;
     }
 
     /**
