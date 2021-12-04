@@ -1,4 +1,6 @@
 <?php
+namespace Mezon\HtmlTemplate\Tests;
+
 use PHPUnit\Framework\TestCase;
 use Mezon\HtmlTemplate\TemplateResources;
 

@@ -57,6 +57,8 @@ class HtmlTemplate
      */
     private $pageVars = [];
 
+    use ActionMessages;
+
     /**
      * Template сonstructor
      *
@@ -77,7 +79,7 @@ class HtmlTemplate
             /** @var string[] $path */
             $this->paths = $path;
         } else {
-            throw (new \Exception('Invalid type for $path parameter', -1));
+            throw (new \Exception('Invalid type for $path parameter', - 1));
         }
 
         $this->resetLayout($template);
