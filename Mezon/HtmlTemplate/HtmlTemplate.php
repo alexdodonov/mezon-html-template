@@ -90,10 +90,6 @@ class HtmlTemplate
         foreach ($blocks as $blockName) {
             $this->addBlock($blockName);
         }
-
-        // output all blocks in one place
-        // but each block can be inserted in {$blockName} places
-        $this->setPageVar('content-blocks', implode('', $this->blocks));
     }
 
     /**
@@ -163,11 +159,23 @@ class HtmlTemplate
      */
     public function getPageVar(string $var)
     {
-        if (isset($this->pageVars[$var]) === false) {
-            throw (new \Exception('Template variable ' . $var . ' was not set'));
+        if (! isset($this->pageVars[$var])) {
+            throw (new \Exception('Template variable ' . $var . ' was not set', -1));
         }
 
         return $this->pageVars[$var];
+    }
+
+    /**
+     * Checking that var exists
+     *
+     * @param string $var
+     *            page var name
+     * @return bool true if the page var exists, false otherwise
+     */
+    public function pageVarExists(string $var): bool
+    {
+        return isset($this->pageVars[$var]);
     }
 
     /**

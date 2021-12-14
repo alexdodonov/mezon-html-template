@@ -72,34 +72,6 @@ class HtmlTemplateUnitTest extends TestCase
     }
 
     /**
-     * Test existing var fetch
-     */
-    public function testGetExistingVar(): void
-    {
-        // setup
-        $template = new HtmlTemplate(HtmlTemplateBaseTest::PATH_TO_TEST_DATA);
-        $template->setPageVar('existing-var', 'existing value');
-
-        // test body and assertions
-        $this->assertEquals('existing value', $template->getPageVar('existing-var'));
-    }
-
-    /**
-     * Test unexisting var fetch
-     */
-    public function testGetUnExistingVar(): void
-    {
-        // setup
-        $template = new HtmlTemplate(HtmlTemplateBaseTest::PATH_TO_TEST_DATA);
-
-        // assertions
-        $this->expectException(\Exception::class);
-
-        // test body
-        $template->getPageVar('unexisting-var');
-    }
-
-    /**
      * Testing setPageVars method
      */
     public function testSetPageVars(): void
