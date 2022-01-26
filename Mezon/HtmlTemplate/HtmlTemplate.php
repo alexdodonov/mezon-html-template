@@ -208,7 +208,7 @@ class HtmlTemplate
      * Compiling the page with it's variables
      *
      * @param string $content
-     *            Compiling content
+     *            compiling content
      */
     public function compilePageVars(string &$content): void
     {
@@ -281,7 +281,7 @@ class HtmlTemplate
      * Method resets layout
      *
      * @param string $template
-     *            Template name
+     *            template name
      */
     public function resetLayout(string $template): void
     {
@@ -301,7 +301,7 @@ class HtmlTemplate
     /**
      * Compile template
      *
-     * @return string Compiled template
+     * @return string compiled template
      */
     public function compile(): string
     {
@@ -364,7 +364,7 @@ class HtmlTemplate
      * Method adds block to page
      *
      * @param string $blockName
-     *            Name of the additing block
+     *            name of the additing block
      */
     public function addBlock(string $blockName): void
     {
