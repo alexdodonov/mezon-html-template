@@ -34,6 +34,15 @@ trait ActionMessages
     abstract public function setPageVar(string $var, $value): void;
 
     /**
+     * Method reads all files $fileName found in $this->paths and joins them
+     *
+     * @param string $fileName
+     *            file name to be fetched
+     * @return array<string, string> compound JSON object as assoc array
+     */
+    abstract protected function getJoinedJsonFilesData(string $fileName): array;
+
+    /**
      * Method returns localized error message by it's key
      *
      * @param string $actionMessageCode
@@ -43,9 +52,7 @@ trait ActionMessages
     private function getActionMessage(string $actionMessageCode): string
     {
         if ($this->fileExists('ActionMessages.json')) {
-            $messages = $this->getFile('ActionMessages.json');
-            /** @var string[] $messages */
-            $messages = json_decode($messages, true);
+            $messages = $this->getJoinedJsonFilesData('ActionMessages.json');
 
             if (isset($messages[$actionMessageCode])) {
                 return $messages[$actionMessageCode];

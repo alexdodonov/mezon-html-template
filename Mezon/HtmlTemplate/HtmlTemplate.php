@@ -160,7 +160,7 @@ class HtmlTemplate
     public function getPageVar(string $var)
     {
         if (! isset($this->pageVars[$var])) {
-            throw (new \Exception('Template variable ' . $var . ' was not set', -1));
+            throw (new \Exception('Template variable ' . $var . ' was not set', - 1));
         }
 
         return $this->pageVars[$var];
@@ -411,5 +411,30 @@ class HtmlTemplate
     public function setResources(TemplateResources $resources): void
     {
         $this->resources = $resources;
+    }
+
+    /**
+     * Method reads all files $fileName found in $this->paths and joins them
+     *
+     * @param string $fileName
+     *            file name to be fetched
+     * @return array<string, string> compound JSON object as assoc array
+     */
+    protected function getJoinedJsonFilesData(string $fileName): array
+    {
+        /** @var array<string, string> $result */
+        $result = [];
+
+        foreach ($this->paths as $path) {
+            $fullPath = trim($path, '/\\') . '/' . $fileName;
+
+            if (file_exists($fullPath)) {
+                /** @var array<string, string> $fileData */
+                $fileData = json_decode(file_get_contents($fullPath), true);
+                $result = array_merge($result, $fileData);
+            }
+        }
+
+        return $result;
     }
 }

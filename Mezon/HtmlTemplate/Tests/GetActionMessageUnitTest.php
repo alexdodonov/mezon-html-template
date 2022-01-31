@@ -46,4 +46,27 @@ class GetActionMessageUnitTest extends TestCase
         // assertions
         $this->assertEquals('', $template->getPageVar('action-message'));
     }
+
+    /**
+     * Testing method method getActionMessage when multyple files with strings were found
+     */
+    public function testMultypleFileWithMessages(): void
+    {
+        // setup
+        $template = new HtmlTemplate(
+            [
+                HtmlTemplateBaseTest::PATH_TO_TEST_DATA,
+                HtmlTemplateBaseTest::PATH_TO_TEST_DATA . '/Res2'
+            ],
+            'index',
+            [
+                'main'
+            ]);
+
+        // test body
+        $template->setErrorMessage('other');
+
+        // assertions
+        $this->assertEquals('other', $template->getPageVar('action-message'));
+    }
 }
