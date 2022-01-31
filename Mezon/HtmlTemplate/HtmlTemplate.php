@@ -426,7 +426,7 @@ class HtmlTemplate
         $result = [];
 
         foreach ($this->paths as $path) {
-            $fullPath = trim($path, '/\\') . '/' . $fileName;
+            $fullPath = rtrim($path, '/\\') . '/' . $fileName;
 
             if (file_exists($fullPath)) {
                 /** @var array<string, string> $fileData */
