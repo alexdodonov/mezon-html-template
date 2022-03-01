@@ -354,7 +354,7 @@ class HtmlTemplate
         } elseif ($this->fileExists('Blocks/' . $blockName . '.tpl')) {
             $blockContent = $this->fileGetContents('Blocks/' . $blockName . '.tpl');
         } else {
-            throw (new \Exception('Block ' . $blockName . ' was not found', - 1));
+            throw (new \Exception('Block "' . $blockName . '" was not found', - 1));
         }
 
         return $blockContent;
